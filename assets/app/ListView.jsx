@@ -9,7 +9,11 @@ export class ListRow extends React.Component {
     render() {
         const {site} = this.props
         return (
-            <tr><td>{site.key}</td><td>{site.created_at}</td><td>{site.domain}</td><td><Link to={'/site/' + site.key} className="btn btn-default">View</Link></td></tr>
+            <tr><td>{site.key}</td>
+                <td>{site.created_at}</td><td>{site.domain}</td>
+                <td>{site.progress ? <span><i className="fa fa-spinner fa-spin"></i> {site.progress}</span> : "DONE"}</td>
+                <td><Link to={'/site/' + site.key} className="btn btn-default">View</Link></td>
+            </tr>
         )
     }
 }
