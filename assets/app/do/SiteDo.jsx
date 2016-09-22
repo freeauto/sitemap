@@ -22,7 +22,18 @@ class Do {
             site: this.params.siteKey
         }
     }
+
+    expand(page) {
+        this.dispatch({
+            type: Do.EXPAND,
+            page: page
+        })
+    }
 }
+
+Object.assign(Do, prefixValues(Do.kind, {
+    EXPAND: 'EXPAND'
+}))
 
 Do.initialState = {
     request: {
@@ -41,6 +52,12 @@ Do.reducer = function(state=Do.initialState, action=null) {
             return Object.assign({}, state, {
                 pages: data.pages
             })
+        }
+        case Do.EXPAND:
+        {
+            const page = action.page;
+            page.expanded = true;
+            return Object.assign({}, state);
         }
     }
     return state

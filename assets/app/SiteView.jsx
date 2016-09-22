@@ -8,14 +8,40 @@ import { Paginate } from './widget.jsx'
 
 
 export class PageItem extends React.Component {
+    constructor() {
+        super();
+        this.expand_ = this.expand_.bind(this)
+    }
+
+    expand_() {
+        console.log("HELLO", this.props.page);
+        this.props.siteDo.expand(this.props.page)
+    }
+
     render() {
         const {page} = this.props
         const title = (page.data && page.data.title) || page.url
         const numUrls = (page.data && page.data.urls && page.data.urls.length)
+        if (page.expanded && numUrls)
+            return (
+                <tr>
+                    <td colSpan="3">
+                        {numUrls} links found at <a href={page.url}>{title}</a>:
+                        <ul>
+                        {page.data.urls.map(url =>
+                            <li><a href="{url}">{url}</a></li>
+                        )}
+                        </ul>
+                    </td>
+                </tr>
+            )
+
+        const _this = this;
+
         return (
             <tr>
                 <td><a href={page.url}>{title}</a></td>
-                <td>{numUrls}</td>
+                <td>{(numUrls && <button className="btn btn-default" onClick={_this.expand_}>Show {numUrls} Links</button>) || "No Links"}</td>
                 <td>{page.created_at}</td>
             </tr>
         )
@@ -42,22 +68,22 @@ export class SiteView extends React.Component {
         return (
             <div>
                 <h1>Pages found on {site.domain}</h1>
-                    <div className="alert alert-info">
+                <div className="alert alert-info">
                     <b>Scraper live status:</b> {site.progress}
-                    </div>
+                </div>
                 <Paginate className="pad-top-bottom" page={page} pageSize={pageSize} num={num} total={total}
                     onClickPrev={siteDo.prevPage_} onClickNext={siteDo.nextPage_} units="pages scraped">
                     <table className="table">
                         <thead>
                             <tr>
                                 <th>Page</th>
-                                <th>Num pages</th>
+                                <th>Links to</th>
                                 <th>Found at</th>
                             </tr>
                         </thead>
                         <tbody>
                             { pages.map(page =>
-                                    <PageItem key={page.key} page={page} />
+                                    <PageItem key={page.key} page={page} siteDo={siteDo}/>
                             ) }
                         </tbody>
                     </table>
