@@ -9,7 +9,7 @@ export class ListRow extends React.Component {
     render() {
         const {site} = this.props
         return (
-            <tr><td>{site.key}</td><td>{site.domain}</td><td>View</td></tr>
+            <tr><td>{site.key}</td><td>{site.created_at}</td><td>{site.domain}</td><td><Link to={'/site/' + site.key} className="btn btn-default">View</Link></td></tr>
         )
     }
 }
@@ -24,10 +24,9 @@ export class ListView extends React.Component {
         e.preventDefault();
         const {listDo} = this.props
         const _this = this;
-        if (this.refs.url.value)
-            listDo.createSite(this.refs.url.value, () => {
-                _this.refs.url.value = '';
-            });
+        listDo.createSite(this.refs.url.value, () => {
+            _this.refs.url.value = '';
+        });
     }
 
     renderContent() {
@@ -44,6 +43,7 @@ export class ListView extends React.Component {
                     <thead>
                         <tr>
                             <th>Scrape ID</th>
+                            <th>Started at</th>
                             <th>Domain</th>
                             <th>View</th>
                         </tr>
@@ -59,7 +59,7 @@ export class ListView extends React.Component {
     }
 
     render() {
-        const { error } = this.props.listSt
+        const { status } = this.props.listSt
         return (
             <div>
                 <h1>My Sites</h1>
@@ -72,7 +72,7 @@ export class ListView extends React.Component {
                         <WorkButton type="submit" className="btn btn-primary"><i className="fa fa-plus" /> Start Scraping</WorkButton>
                     </form>
                 </div>
-                { error ? <div className="alert alert-danger">Uh oh! { error }</div> : null }
+                { status ? <div className="alert alert-warning">{status}</div> : null }
                 {this.renderContent()}
             </div>
         )

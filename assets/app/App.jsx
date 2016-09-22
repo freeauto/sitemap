@@ -11,6 +11,7 @@ import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux'
 
 import connect from 'utils/do-connect.jsx'
 import { ListView } from './ListView.jsx'
+import { SiteView } from './SiteView.jsx'
 import { RootDo, RootReducer } from './do/index.jsx'
 import { IN_BROWSER, IS_LIKE_PROD } from 'front/constants.jsx'
 import { NavLink } from 'front/nav.jsx'
@@ -108,7 +109,7 @@ class AppView extends React.Component {
 let AppRouter = (
     <Route path="/" component={AppView}>
         <IndexRoute component={ListView} />
-        <Route path="team" component={ListView} />
+        <Route path="site/:siteKey" component={SiteView} />
     </Route>
 );
 

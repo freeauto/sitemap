@@ -2,9 +2,11 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
 import { ListDo } from './ListDo.jsx'
+import { SiteDo } from './SiteDo.jsx'
 
 export const RootDo = {
-    list: ListDo
+    list: ListDo,
+    site: SiteDo
 }
 
 const reducerMap = {

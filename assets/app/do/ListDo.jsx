@@ -25,12 +25,17 @@ class Do {
                 callback(data)
         }).fail((xhr, status, error) => {
             console.error("Failed", getError(xhr, status, error));
+            _this.dispatch({
+                type: Do.LOAD_STATUS,
+                status: getError(xhr, status, error)
+            });
         });
     }
 }
 
 Object.assign(Do, prefixValues(Do.kind, {
-    CREATE_DONE: 'CREATE_DONE'
+    CREATE_DONE: 'CREATE_DONE',
+    LOAD_STATUS: 'LOAD_STATUS'
 }))
 
 Do.initialState = {
@@ -39,7 +44,8 @@ Do.initialState = {
     },
 
     siteKeys: [],
-    siteMap: {}
+    siteMap: {},
+    status: null
 }
 
 
@@ -55,16 +61,23 @@ Do.reducer = function(state=Do.initialState, action=null) {
                 siteKeys.push(site.key)
             }
             return Object.assign({}, state, {
+                status: null,
                 siteKeys,
                 siteMap
             })
         }
+        case Do.LOAD_STATUS:
+            return Object.assign({}, state, {
+                status: action.status
+            });
         case Do.CREATE_DONE:
         {
             const {site} = action.data
             state.siteKeys.unshift(site.key)
             state.siteMap[site.key] = site
-            return Object.assign({}, state)
+            return Object.assign({}, state, {
+                status: null
+            })
         }
     }
     return state
