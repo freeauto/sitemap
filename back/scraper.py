@@ -18,7 +18,7 @@ class SiteScraper(object):
             item = que.pop()
             page = Page.get(key=item.page_key)
             if not page:
-                logging.error("PAGE NOT FOUND: %s", item.page_key)
+                logging.error("Page not found: %s", item.page_key)
                 continue
             tree, final_url = get_tree(page.url, is_prod=settings.IS_LIKE_PROD)
             urls = []
@@ -41,15 +41,20 @@ class SiteScraper(object):
             url = url[:hash]
         site = Site.get(key=site_key)
         if not site:
-            logging.error("SITE NOT FOUND: %s", site_key)
+            logging.error("Site not found: %s", site_key)
             return
         if get_domain(url) != site.domain:
             return
         if not Page.get(url=url, site_key=site_key):
-            print "NEW URL:", url
+            logging.info("New URL: %s", url)
             page = Page(url=url, site_key=site_key)
+            site.increment('num_pages')
+            site.progress = "%d pages found" % site.num_pages
+            if datetime.utcnow() - site.last_relay_at >= timedelta(seconds=3):
+                site.last_relay_at = datetime.utcnow()
+                relay.send_room('everybody', site.to_dict(), event='site')
             db.commit()
+            gevent.sleep(0.10)
             self.scrape_que.append(QueItem(page_key=page.key))
-
 
 scraper = SiteScraper()

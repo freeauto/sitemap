@@ -13,6 +13,7 @@ import connect from 'utils/do-connect.jsx'
 import { ListView } from './ListView.jsx'
 import { SiteView } from './SiteView.jsx'
 import { RootDo, RootReducer } from './do/index.jsx'
+import { ListDo } from './do/ListDo.jsx'
 import { IN_BROWSER, IS_LIKE_PROD } from 'front/constants.jsx'
 import { NavLink } from 'front/nav.jsx'
 import { Stream } from 'utils/stream.jsx'
@@ -58,11 +59,16 @@ function onServerCleanup() {
 class NavView extends React.Component {
     componentDidMount() {
         const _this = this;
-        this.stream = new Stream('log', data => console.log("Stream received:", data))
+        this.logStream = new Stream('log', data => console.log("Stream received:", data));
+        this.siteStream = new Stream('site', data => {
+            console.log("SITE STREAM received:", data)
+            ROOT_DO.list.updateSite(data)
+        });
     }
 
     componentWillUnmount() {
-        this.stream.close()
+        this.logStream.close();
+        this.siteStream.close();
     }
 
     render() {

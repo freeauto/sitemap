@@ -18,7 +18,7 @@ class Do {
         $.post('/api/sites', {url}, data => {
             console.log("Posted site", data);
             _this.dispatch({
-                type: Do.CREATE_DONE,
+                type: Do.UPDATE_SITE,
                 data
             })
             if (callback)
@@ -31,10 +31,17 @@ class Do {
             });
         });
     }
+
+    updateSite(site) {
+        this.dispatch({
+            type: Do.UPDATE_SITE,
+            data: {site: site}
+        })
+    }
 }
 
 Object.assign(Do, prefixValues(Do.kind, {
-    CREATE_DONE: 'CREATE_DONE',
+    UPDATE_SITE: 'UPDATE_SITE',
     LOAD_STATUS: 'LOAD_STATUS'
 }))
 
@@ -70,10 +77,11 @@ Do.reducer = function(state=Do.initialState, action=null) {
             return Object.assign({}, state, {
                 status: action.status
             });
-        case Do.CREATE_DONE:
+        case Do.UPDATE_SITE:
         {
             const {site} = action.data
-            state.siteKeys.unshift(site.key)
+            if (!state.siteMap[site.key])
+                state.siteKeys.unshift(site.key)
             state.siteMap[site.key] = site
             return Object.assign({}, state, {
                 status: null
