@@ -14,8 +14,13 @@ app.template_filter()(escapejs)
 react = ReactRender(app)
 
 
-@app.route('/<path:pathname>')
-@app.route('/', defaults={'pathname':''})
+@app.route('/')
+def home_view():
+    return redirect(url_for('app_view'))
+
+
+@app.route('/app/<path:pathname>')
+@app.route('/app/', defaults={'pathname':''})
 def app_view(pathname):
     server_data = dict(test="Hello there, this is the data.");
     rendered = react.render_router('app/App.jsx', pathname, '/app', redux=1, server_data=server_data)

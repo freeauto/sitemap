@@ -64,18 +64,6 @@ class NavView extends React.Component {
                         </button>
                         <Link to="/" className="navbar-brand"><i className="fa fa-code-fork"></i> Sitemap</Link>
                     </div>
-                    <div className="collapse navbar-collapse navbar-right navbar-main-collapse">
-                        <ul className="nav navbar-nav">
-                            <NavLink to="/" activeClassName="active" onlyActiveOnIndex>Main</NavLink>
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Team <span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <NavLink to="/team-shared" activeClassName="active">Team shared</NavLink>
-                                    <NavLink to="/team" activeClassName="active">Team stats</NavLink>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </nav>
         )

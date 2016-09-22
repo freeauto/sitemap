@@ -19,11 +19,12 @@ export class ListView extends React.Component {
                     <thead>
                         <tr>
                             <th>Site</th>
+                            <th>View</th>
                         </tr>
                     </thead>
                     <tbody>
                         {sites.map(site =>
-                                <tr key={site}><td>{site}</td></tr>
+                                <tr key={site}><td>{site}</td><td>View</td></tr>
                         )}
                     </tbody>
                 </table>
@@ -35,7 +36,7 @@ export class ListView extends React.Component {
         const { error } = this.props.listSt
         return (
             <div>
-                <h1>Sites</h1>
+                <h1>My Sites</h1>
                 { error ? <div className="alert alert-danger">Uh oh! { error }</div> : null }
                 {this.renderContent()}
             </div>
