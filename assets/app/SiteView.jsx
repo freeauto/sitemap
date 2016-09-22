@@ -29,7 +29,7 @@ export class PageItem extends React.Component {
                         {numUrls} links found at <a href={page.url}>{title}</a>:
                         <ul>
                         {page.data.urls.map(url =>
-                            <li><a href="{url}">{url}</a></li>
+                            <li><a href={url}>{url}</a></li>
                         )}
                         </ul>
                     </td>
