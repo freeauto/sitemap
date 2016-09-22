@@ -1,64 +1,51 @@
 import { routerActions } from 'react-router-redux'
 
 import { getError, urlParams, dictSubset, prefixValues } from 'utils/render-utils.jsx'
-
+import { LoadMixin } from 'mixins/LoadMixin.jsx'
 
 class Do {
     static kind = 'site'
+    static getUrl = '/api/pages'
 
     constructor(dispatch, getState) {
         this.dispatch = dispatch
         this.getState = getState
     }
 
-    load(key) {
-        const _this = this
-        _this.dispatch({
-            type: Do.LOAD_STATUS,
-            status: 'Loading...'
-        });
-        $.get('/api/sites/' + key, data => {
-            _this.dispatch({
-                type: Do.LOAD_DONE,
-                data: data
-            });
-        }).fail((xhr, status, error) => {
-            console.error("Failed", getError(xhr, status, error));
-            _this.dispatch({
-                type: Do.LOAD_STATUS,
-                status: getError(xhr, status, error)
-            });
-        })
+    updateDo(props) {
+        this.params = props.params
+    }
+
+    getRequest() {
+        return {
+            page: parseInt(this.location.query.page || '1'),
+            site: this.params.siteKey
+        }
     }
 }
 
-Object.assign(Do, prefixValues(Do.kind, {
-    LOAD_DONE: 'LOAD_DONE',
-    LOAD_STATUS: 'LOAD_STATUS'
-}))
-
 Do.initialState = {
-    site: null,
-    status: null
+    request: {
+        site: null,
+        page: 0
+    },
+    pages: []
 }
 
 Do.reducer = function(state=Do.initialState, action=null) {
+    state = Do.loadReducer(state, action)
     switch (action.type) {
         case Do.LOAD_DONE:
         {
-            const { data } = action;
+            const data = action.data;
             return Object.assign({}, state, {
-                status: null,
-                site: data.site
-            });
+                pages: data.pages
+            })
         }
-        case Do.LOAD_STATUS:
-            return Object.assign({}, state, {
-                status: action.status
-            });
     }
     return state
 }
 
+Do = LoadMixin(Do)
 
 export { Do as SiteDo }

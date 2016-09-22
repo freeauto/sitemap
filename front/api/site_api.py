@@ -26,3 +26,21 @@ def site_api(key):
     if not site:
         return jsonify(error='Site not found'), 404
     return jsonify(site=site.to_dict())
+
+
+@app.route('/api/pages')
+def pages_api():
+    site_key = request.args.get('site')
+    page = int(request.args.get('page', '1'))
+    site = Site.get(key=site_key)
+    if not site:
+        return jsonify(error='Site not found'), 404
+    page_size = settings.PAGE_SIZE
+    q = Page.q().filter_by(site_key=site_key).order_by(Page.url.desc())
+    total = q.count()
+    q = q.offset((page - 1) * page_size).limit(page_size)
+    pages = []
+    for x in q:
+        d = x.to_dict()
+        pages.append(d)
+    return jsonify(pages=pages, total=total, page_size=page_size, page=page)

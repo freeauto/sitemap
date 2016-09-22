@@ -39,3 +39,6 @@ CONFIG = {
 }
 
 load_config_secrets(CONFIG, IS_REAL_PROD, ['APP_SECRET_KEY'])
+
+PAGE_SIZE = 15
+

@@ -29,8 +29,10 @@ class SiteScraper(object):
                 if tree_urls:
                     for url in tree_urls:
                         url = urljoin(final_url, url)
-                        urls.append(url)
-                        self.scrape(url, page.site_key)
+                        url = self.scrape(url, page.site_key)
+                        if url:
+                            urls.append(url)
+
             page.data = dict(urls=urls,
                              title=title)
             db.commit()
@@ -56,5 +58,6 @@ class SiteScraper(object):
             db.commit()
             gevent.sleep(0.10)
             self.scrape_que.append(QueItem(page_key=page.key))
+            return url
 
 scraper = SiteScraper()

@@ -49,6 +49,7 @@ export class ListView extends React.Component {
                             <th>Scrape ID</th>
                             <th>Started at</th>
                             <th>Domain</th>
+                            <th>Live Status</th>
                             <th>View</th>
                         </tr>
                     </thead>
