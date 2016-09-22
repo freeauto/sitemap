@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
 import connect from 'utils/do-connect.jsx'
-import { TestDo } from './do/TestDo.jsx'
+import { ListDo } from './do/ListDo.jsx'
 
-export class TestView extends React.Component {
+export class ListView extends React.Component {
     renderContent() {
-        const { tests, loading } = this.props.testSt;
+        const { sites, loading } = this.props.listSt;
 
         if (loading)
             return (
@@ -18,12 +18,12 @@ export class TestView extends React.Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Test</th>
+                            <th>Site</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {tests.map(test =>
-                                <tr key={test}><td>{test}</td></tr>
+                        {sites.map(site =>
+                                <tr key={site}><td>{site}</td></tr>
                         )}
                     </tbody>
                 </table>
@@ -32,10 +32,10 @@ export class TestView extends React.Component {
     }
 
     render() {
-        const { error } = this.props.testSt
+        const { error } = this.props.listSt
         return (
             <div>
-                <h1>Tests</h1>
+                <h1>Sites</h1>
                 { error ? <div className="alert alert-danger">Uh oh! { error }</div> : null }
                 {this.renderContent()}
             </div>
@@ -43,11 +43,11 @@ export class TestView extends React.Component {
     }
 
     static propTypes = {
-        testSt: PropTypes.object.isRequired,
-        testDo: PropTypes.object.isRequired
+        listSt: PropTypes.object.isRequired,
+        listDo: PropTypes.object.isRequired
     }
 }
 
-TestView = connect({
-    test: TestDo
-})(TestView)
+ListView = connect({
+    list: ListDo
+})(ListView)

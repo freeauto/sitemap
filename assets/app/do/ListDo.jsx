@@ -5,8 +5,8 @@ import { LoadMixin } from 'mixins/LoadMixin.jsx'
 
 
 class Do {
-    static kind = 'test'
-    static getUrl = '/api/tests'
+    static kind = 'list'
+    static getUrl = '/api/sites'
 
     constructor(dispatch, getState) {
         this.dispatch = dispatch
@@ -20,7 +20,7 @@ Do.initialState = {
         page: 0
     },
 
-    tests: []
+    sites: []
 }
 
 
@@ -31,7 +31,7 @@ Do.reducer = function(state=Do.initialState, action=null) {
         {
             const data = action.data;
             return Object.assign({}, state, {
-                tests: data.tests
+                sites: data.sites
             })
         }
     }
@@ -41,4 +41,4 @@ Do.reducer = function(state=Do.initialState, action=null) {
 
 Do = LoadMixin(Do)
 
-export { Do as TestDo }
+export { Do as ListDo }

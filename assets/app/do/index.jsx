@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
-import { TestDo } from './TestDo.jsx'
+import { ListDo } from './ListDo.jsx'
 
 export const RootDo = {
-    test: TestDo
+    list: ListDo
 }
 
 const reducerMap = {
