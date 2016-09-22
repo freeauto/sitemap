@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -veo pipefail # return exit code of failure, if anything fails
+
+bash com/bin/heroku_install_nodejs.sh
+
+PYTHONPATH="." python com/bin/install_npm_programs.py
+ln -sf ../../vendor/node/bin/bower .heroku/python/bin
+ln -sf ../../vendor/node/bin/lessc .heroku/python/bin
+ln -sf ../../vendor/node/bin/uglifyjs .heroku/python/bin
+
+if [[ -f package.json ]]; then
+  npm install --production
+  NODE_PATH=$NODE_PATH:./com/js NODE_ENV=production ./node_modules/webpack/bin/webpack.js -p
+fi
+
+bower install --production # this ignores dev-dependencies in bower.json
+
+python manage.py clean
+python manage.py build
+alembic -c alembic_prod.ini upgrade head
+
+echo "=== Install completed at: `date` `cat assets/deploy-notes.txt`"
