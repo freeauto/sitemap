@@ -29,7 +29,7 @@ class SiteScraper(object):
                 if tree_urls:
                     for url in tree_urls:
                         url = urljoin(final_url, url)
-                        url = self.scrape(url, page.site_key)
+                        self.scrape(url, page.site_key)
                         urls.append(url)
 
             page.data = dict(urls=urls,
