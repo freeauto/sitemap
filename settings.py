@@ -8,8 +8,8 @@ from com.app_utils import load_config_secrets
 
 LOCALDEV_PORT = 8080
 
-NAME = 'MvpReact'
-ROOT_URL_PROD = 'http://mvpreact.baylaunch.com'
+NAME = 'Sitemap'
+ROOT_URL_PROD = 'http://sitemap.baylaunch.com'
 ROOT_URL_DEV = 'http://localhost:%d' % LOCALDEV_PORT
 
 IS_REAL_PROD = os.environ.get('COMMIT') is not None
