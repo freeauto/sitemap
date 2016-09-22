@@ -13,7 +13,7 @@ class Do {
         this.getState = getState
     }
 
-    createList(url, callback) {
+    createSite(url, callback) {
         const _this = this
         $.post('/api/sites', {url}, data => {
             console.log("Posted site", data);
@@ -48,11 +48,6 @@ Do.reducer = function(state=Do.initialState, action=null) {
     switch (action.type) {
         case Do.LOAD_DONE:
         {
-            const data = action.data;
-            return Object.assign({}, state, {
-                sites: data.sites
-            })
-
             const { sites } = action.data
             let siteMap = {}, siteKeys = []
             for (const site of sites) {

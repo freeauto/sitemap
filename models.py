@@ -5,15 +5,13 @@ from database import Model
 import sqlalchemy as sa
 
 class Site(Model, MixinTime):
-    key = sa.Column(sa.Text, primary_key=True)
+    key = sa.Column(sa.Integer, primary_key=True)
+    domain = sa.Column(sa.Text, index=True)
+    scraping = sa.Column(sa.Boolean, default=True)
 
     def __unicode__(self):
-        return unicode(self.key)
+        return unicode(self.domain)
 
     @classmethod
     def create(cls, domain):
-        return Site(key=domain)
-
-    @classmethod
-    def ensure_by_domain(cls, domain):
-        return cls.get(key=domain) or cls.create(key=domain)
+        return Site(domain=domain)

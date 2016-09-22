@@ -5,13 +5,27 @@ import connect from 'utils/do-connect.jsx'
 import { ListDo } from './do/ListDo.jsx'
 import { WorkButton } from 'front/button.jsx'
 
+export class ListRow extends React.Component {
+    render() {
+        const {site} = this.props
+        return (
+            <tr><td>{site.key}</td><td>{site.domain}</td><td>View</td></tr>
+        )
+    }
+}
+
 export class ListView extends React.Component {
+    constructor() {
+        super()
+        this.onSubmitUrl_ = this.onSubmitUrl_.bind(this)
+    }
+
     onSubmitUrl_(e) {
         e.preventDefault();
         const {listDo} = this.props
         const _this = this;
         if (this.refs.url.value)
-            listDo.scrapeSite(this.refs.url.value, () => {
+            listDo.createSite(this.refs.url.value, () => {
                 _this.refs.url.value = '';
             });
     }
@@ -29,13 +43,14 @@ export class ListView extends React.Component {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th>Site</th>
+                            <th>Scrape ID</th>
+                            <th>Domain</th>
                             <th>View</th>
                         </tr>
                     </thead>
                     <tbody>
                         {siteKeys.map(siteKey =>
-                                <tr key={siteKey}><td>{siteKey}</td><td>View</td></tr>
+                          <ListRow key={siteKey} site={siteMap[siteKey]} />
                         )}
                     </tbody>
                 </table>
