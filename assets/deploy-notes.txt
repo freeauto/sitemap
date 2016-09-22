@@ -1,4 +1,0 @@
-Git hash: 45cd8ef
-Git log: clean up protocol urls for fonts
-Deployed by: richard
-Deploy time: 2015-06-08 18:09:26

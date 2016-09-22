@@ -62,7 +62,7 @@ class NavView extends React.Component {
                         <button type="button" className="navbar-toggle notify-anchor" data-toggle="collapse" data-target=".navbar-main-collapse">
                             <i className="fa fa-bars" />
                         </button>
-                        <Link to="/" className="navbar-brand"><i className="fa fa-code-fork"></i> MvpReact</Link>
+                        <Link to="/" className="navbar-brand"><i className="fa fa-code-fork"></i> Sitemap</Link>
                     </div>
                     <div className="collapse navbar-collapse navbar-right navbar-main-collapse">
                         <ul className="nav navbar-nav">
@@ -107,7 +107,7 @@ class AppView extends React.Component {
                 </section>
                 <footer>
                     <div className="container text-center">
-                        <p><a href="mailto:hello@baylaunch.com" className="text-muted" target="_blank">hello@baylaunch.com</a></p>
+                        <p><a href="mailto:richard@baylaunch.com" className="text-muted" target="_blank">richard@baylaunch.com</a></p>
                     </div>
                 </footer>
             </div>
