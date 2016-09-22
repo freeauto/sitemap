@@ -32,6 +32,10 @@ CONFIG = {
     #'RENDER_PROD_ONLY': True,
 
     #'LOG_SQL': True,
+
+    # redis
+    'REDIS_URL': os.environ.get('REDISCLOUD_URL') or 'redis://localhost',
+    'REDIS_NAMESPACE': NAME,
 }
 
 load_config_secrets(CONFIG, IS_REAL_PROD, ['APP_SECRET_KEY'])

@@ -15,6 +15,7 @@ import { SiteView } from './SiteView.jsx'
 import { RootDo, RootReducer } from './do/index.jsx'
 import { IN_BROWSER, IS_LIKE_PROD } from 'front/constants.jsx'
 import { NavLink } from 'front/nav.jsx'
+import { Stream } from 'utils/stream.jsx'
 
 
 // store logic
@@ -55,6 +56,15 @@ function onServerCleanup() {
 }
 
 class NavView extends React.Component {
+    componentDidMount() {
+        const _this = this;
+        this.stream = new Stream('log', data => console.log("Stream received:", data))
+    }
+
+    componentWillUnmount() {
+        this.stream.close()
+    }
+
     render() {
         return (
             <nav className="navbar navbar-custom" role="navigation">
@@ -119,6 +129,8 @@ if (IN_BROWSER) {
     const store = myCreateStore();
     const history = syncHistoryWithStore(browserHistory, store);
     onServerInit(store, window.__SERVER_DATA);
+
+    Stream.init();
 
     ReactDOM.render((
         <Provider store={store}>
