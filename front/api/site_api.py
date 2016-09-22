@@ -1,6 +1,8 @@
 from front.home import *
 
-from com.string_utils import URL_RX
+from com.string_utils import URL_RX, get_domain, urlize
+from back.scraper import scraper
+
 
 @app.route('/api/sites', methods=['POST', 'GET'])
 def sites_api():
@@ -8,8 +10,10 @@ def sites_api():
         url = request.form.get('url')
         if not url or not URL_RX.match(url):
             return jsonify(error='Please enter a valid URL'), 400
-        site = Site.create(domain=url)
+        url = urlize(url)
+        site = Site(domain=get_domain(url), url=url)
         db.commit()
+        scraper.scrape(url, site.key)
         return jsonify(site=site.to_dict())
     else:
         sites = [s.to_dict() for s in Site.q().order_by(Site.key.desc())]
