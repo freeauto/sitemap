@@ -22,7 +22,9 @@ class SiteScraper(object):
                 continue
             tree, final_url = get_tree(page.url, is_prod=settings.IS_LIKE_PROD)
             urls = []
+            assets = []
             title = None
+            site = page.site
             if tree is not None:
                 title = tree_title(tree)
                 tree_urls = tree.xpath("//a/@href")
@@ -32,8 +34,20 @@ class SiteScraper(object):
                         self.scrape(url, page.site_key)
                         urls.append(url)
 
+                asset_map = (site.data and site.data.copy()) or {}
+                for xpath in ["//javascript/@src", "//img/@src"]:
+                    tree_urls = tree.xpath(xpath)
+                    if tree_urls:
+                        for url in tree_urls:
+                            url = urljoin(final_url, url)
+                            assets.append(url)
+                            count = asset_map.get(url) or 0
+                            asset_map[url] = count + 1
+                site.data = asset_map
+
             page.data = dict(urls=urls,
-                             title=title)
+                             title=title,
+                             assets=assets)
             db.commit()
 
     def scrape(self, url, site_key):

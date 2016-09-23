@@ -32,6 +32,12 @@ export class PageItem extends React.Component {
                             <li><a href={url}>{url}</a></li>
                         )}
                         </ul>
+                        Assets:
+                        <ul>
+                            {page.data.assets.map(url =>
+                            <li><a href={url}>{url}</a></li>
+                            )}
+                        </ul>
                     </td>
                 </tr>
             )

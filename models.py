@@ -12,6 +12,7 @@ class Site(Model, MixinTime):
     url = sa.Column(sa.Text) # starting url
     progress = sa.Column(sa.Text, default='Scraping...')
     num_pages = sa.Column(sa.Integer)
+    data = sa.Column(JSONType)
 
     last_relay_at = sa.Column(sa.DateTime, default=datetime.utcnow)
 
